@@ -1,22 +1,13 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001'
-
-const getModel = async () =>{
-    try{
-        const request = await axios.get(baseUrl)
-        return request.data
-    } catch(err){
-        return err
-    }
-}
+const baseUrl = '/model'
 
 const getSentiment = async (query) => {
     try{
-        const request = await axios.get(`${baseUrl}/model/${query}`)
+        const request = await axios.get(`${baseUrl}/${query}`)
         return request.data
     } catch(err){
         return err
     }
 }
 
-export default { getModel, getSentiment }
+export default { getSentiment }

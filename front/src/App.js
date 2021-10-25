@@ -10,7 +10,7 @@ import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import MenuIcon from '@mui/icons-material/Menu';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import clsx from 'clsx';
@@ -19,11 +19,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
-
-import { useState } from 'react';
-import { useEffect } from 'react/cjs/react.development';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import Tooltip from '@mui/material/Tooltip';
+import { useState, useEffect } from 'react';
 import modelService from './services/model'
-
+import background from "./background.png";
 
 function Copyright() {
   return (
@@ -119,7 +119,7 @@ function App() {
     setQuery(event.target.value)
     
   }
-
+/*
   useEffect(() =>{
     async function checksentiment(){
       if (query === ""){
@@ -133,7 +133,7 @@ function App() {
     checksentiment()
     
   },[query])
-
+*/
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -141,6 +141,16 @@ function App() {
   const handleDrawerClose = () => {
     setOpen(false);
   };  
+
+
+const buttonPress = async () => {
+  if (query === ""){
+    setResults("Waiting for input")
+  }else{
+    const results = await modelService.getSentiment(query)
+    setResults(results.score)
+  }
+}
 
 
   return (
@@ -215,8 +225,22 @@ function App() {
               spacing={2}
               justifyContent="center"
             >     
-            <TextField id="outlined-basic" label="Try it now! Input your text here" variant="outlined" value = {query} onChange = {handleTextChange} />     
-            <div> Score : {result} </div>
+            <TextField id="outlined-basic" label="Try it now! Input your text here" variant="outlined" value = {query} onChange = {handleTextChange} />  
+            <Tooltip title = "Generate Sentiment">
+              <IconButton aria-label="add" onClick = {buttonPress}>
+                  <AutoFixHighIcon />
+              </IconButton> 
+            </Tooltip>
+            
+            </Stack>
+            <Stack
+              sx={{ pt: 4 }}
+              direction="row"
+              spacing={2}
+              justifyContent="center"
+            >     
+            <div> Score : </div>
+            <div> {result} </div>
             </Stack>
           </Container>
         </Box>
